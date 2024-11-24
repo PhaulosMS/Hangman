@@ -2,11 +2,13 @@
 #include <iostream>
 
 
-Renderer::Renderer(std::string Title, int WindowWidth, int WindowHeight) : m_Title(Title), m_WindowWidth(WindowWidth), m_WindowHeight(WindowHeight)
+Renderer::Renderer(std::string Title, int WindowWidth, int WindowHeight, GameLogic GameLogic) 
+	: m_Title(Title), m_WindowWidth(WindowWidth), m_WindowHeight(WindowHeight), m_GameLogic(GameLogic)
 {
 	m_Window.create(sf::VideoMode(m_WindowWidth, m_WindowHeight), m_Title);
 	m_Window.setFramerateLimit(60);
 	SetupGame();
+	
 }
 
 void Renderer::Run()
@@ -20,18 +22,18 @@ void Renderer::Run()
 			{
 				m_Window.close();
 			}
-			
 		}
 
 		DrawGraphics();
+		
 	}
-	
 }
 
 void Renderer::SetupGame()
 {
 	SetFont();
 	SetupText();
+	m_GameLogic.StartGame();
 }
 
 void Renderer::SetupText()
@@ -46,7 +48,7 @@ void Renderer::SetupText()
 	m_IngameTitle.setPosition(m_WindowWidth / 2.0f, 50.0f);
 }
 
-std::vector<sf::RectangleShape> Renderer::DrawBase()
+std::vector<sf::RectangleShape> Renderer::MakeGallow()
 {
 		sf::Vector2f BaseSize(400.0f, 5.0f);
 	    sf::Vector2f BaseOrigin(BaseSize.x / 2, BaseSize.y / 2);
@@ -101,7 +103,7 @@ void Renderer::DrawGraphics()
 
 	m_Window.draw(m_IngameTitle);
 
-	std::vector<sf::RectangleShape> Rects = DrawBase();
+	std::vector<sf::RectangleShape> Rects = MakeGallow();
 	for (const sf::RectangleShape& Rect : Rects) {
 		m_Window.draw(Rect);
 	}

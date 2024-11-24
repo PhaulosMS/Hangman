@@ -17,6 +17,9 @@
 
 int main() 
 {
-    Renderer Game(Title, WindowWidth, WindowHeight);
+    GameLogic GameLogic;
+    Renderer Game(Title, WindowWidth, WindowHeight, GameLogic);
+    
+
     Game.Run();
 }

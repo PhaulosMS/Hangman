@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "GameLogic.h"
 class Renderer
 {
 public:
-	Renderer(std::string Title, int WindowWidth, int WindowHeight);
+	Renderer(std::string Title, int WindowWidth, int WindowHeight, GameLogic GameLogic);
 	void Run();
 
 private:
@@ -19,10 +20,10 @@ private:
 private:
 	void SetFont();
 	void DrawGraphics();
-	std::vector<sf::RectangleShape> DrawBase();
+	std::vector<sf::RectangleShape> MakeGallow();
 	void SetupGame();
 	void SetupText();
-	void SetWord();
+	GameLogic& m_GameLogic;
 
 };
 
