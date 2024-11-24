@@ -7,10 +7,8 @@
 
 
 
-GameLogic::GameLogic()
-{
-	
-}
+GameLogic::GameLogic() : m_Lives(6), m_Guesses() {}
+
 void GameLogic::StartGame()
 {
 	SetWord();
@@ -40,16 +38,21 @@ void GameLogic::SetWord() {
 void GameLogic::ProcessLetter(char Letter)
 {
 	Letter = std::toupper(Letter);
+	if (m_Lives <= 0) return;
 
 	if (std::find(m_Word.begin(), m_Word.end(), Letter) != m_Word.end())
 	{
-		
-		m_WrongGuesses.push_back(Letter);
+		m_Guesses.push_back(Letter);
 		SetGuessedWord(Letter);
+	}
+	else if (std::find(m_Guesses.begin(), m_Guesses.end(), Letter) != m_Guesses.end())
+	{
+	std::cout << "You have already guessed this letter: " << Letter << std::endl;
 	}
 	else
 	{
-		m_WrongGuesses.push_back(Letter);
+		m_Guesses.push_back(Letter);
+		m_Lives--;
 	}
 }
 
