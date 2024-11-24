@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Renderer::Renderer(std::string Title, int WindowWidth, int WindowHeight, GameLogic GameLogic) 
+Renderer::Renderer(std::string Title, int WindowWidth, int WindowHeight, GameLogic& GameLogic) 
 	: m_Title(Title), m_WindowWidth(WindowWidth), m_WindowHeight(WindowHeight), m_GameLogic(GameLogic)
 {
 	m_Window.create(sf::VideoMode(m_WindowWidth, m_WindowHeight), m_Title);
@@ -18,34 +18,57 @@ void Renderer::Run()
 		sf::Event Event;
 		while (m_Window.pollEvent(Event))
 		{
-			if (Event.type == sf::Event::Closed)
+			if (Event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || m_GameLogic.IsWin())
 			{
 				m_Window.close();
 			}
+
+			m_GameLogic.AskForInput(Event);
 		}
 
 		DrawGraphics();
-		
 	}
 }
 
 void Renderer::SetupGame()
 {
+	m_GameLogic.StartGame();
 	SetFont();
 	SetupText();
-	m_GameLogic.StartGame();
+	
 }
 
 void Renderer::SetupText()
 {
+	SetupIngameTitle();
+	SetupGuessedWord();
+}
+
+void Renderer::SetupIngameTitle()
+{
+	// Ingame Title
 	m_IngameTitle.setString(m_Title);
 	m_IngameTitle.setFont(m_Font);
 	m_IngameTitle.setCharacterSize(32);
 	m_IngameTitle.setFillColor(sf::Color::Black);
 
-	sf::FloatRect textBounds = m_IngameTitle.getLocalBounds();
-	m_IngameTitle.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+	sf::FloatRect titleBounds = m_IngameTitle.getLocalBounds();
+	m_IngameTitle.setOrigin(titleBounds.left + titleBounds.width / 2.0f, titleBounds.top + titleBounds.height / 2.0f);
 	m_IngameTitle.setPosition(m_WindowWidth / 2.0f, 50.0f);
+}
+
+void Renderer::SetupGuessedWord()
+{
+	//Word needed to be guessed
+	m_GuessedWord.setString(m_GameLogic.GetGuessedWord());
+	m_GuessedWord.setFont(m_Font);
+	m_GuessedWord.setCharacterSize(64);
+	m_GuessedWord.setFillColor(sf::Color::Black);
+
+	sf::FloatRect GuessedWordBounds = m_GuessedWord.getLocalBounds();
+	m_GuessedWord.setOrigin(GuessedWordBounds.left + GuessedWordBounds.width / 2.0f, GuessedWordBounds.top + GuessedWordBounds.height / 2.0f);
+	m_GuessedWord.setPosition(m_WindowWidth / 2.0f, 150.0f);
+	m_GuessedWord.setLetterSpacing(2);
 }
 
 std::vector<sf::RectangleShape> Renderer::MakeGallow()
@@ -67,7 +90,7 @@ std::vector<sf::RectangleShape> Renderer::MakeGallow()
 	    // Base
 	    RectangleBases[0].setSize(BaseSize);
 	    RectangleBases[0].setOrigin(BaseOrigin);
-	    RectangleBases[0].setPosition(sf::Vector2f(m_WindowWidth / 2, m_WindowHeight - 300));
+	    RectangleBases[0].setPosition(sf::Vector2f((float)m_WindowWidth / 2, (float)m_WindowHeight - 300));
 	    RectangleBases[0].setFillColor(sf::Color::Black);
 	
 	    // Pole
@@ -99,13 +122,18 @@ void Renderer::SetFont()
 
 void Renderer::DrawGraphics()
 {
+
+	SetupGuessedWord();
+
 	m_Window.clear(sf::Color::White);
 
 	m_Window.draw(m_IngameTitle);
+	m_Window.draw(m_GuessedWord);
 
 	std::vector<sf::RectangleShape> Rects = MakeGallow();
 	for (const sf::RectangleShape& Rect : Rects) {
 		m_Window.draw(Rect);
 	}
+	
 	m_Window.display();
 }

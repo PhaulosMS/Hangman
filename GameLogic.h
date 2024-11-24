@@ -1,28 +1,38 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include <string>
-#include <unordered_set>
 class GameLogic
 {
+
+public:
+	GameLogic();
 private:
-	int m_MaxGuesses;
+	int m_Lives;
 	std::string m_Word;
 	std::string m_GuessedWord;
-	std::unordered_set<char> m_WrongGuesses;
+	std::vector<char> m_WrongGuesses;
 
 private:
 	
 	void SetWord();
 	void ProcessLetter(char Letter);
 	bool IsGameOver() const;
-	bool IsWin() const;
+	void PopulateGuessedWord();
+	void SetGuessedWord(char Letter);
+	void ConvertWordToUpper();
+	char keyCodeToChar(sf::Keyboard::Key key);
+	
 
 public:
 	void StartGame();
+	void AskForInput(sf::Event Event);
+	bool IsWin() const;
 
 public:
 	//Getters
 	std::string GetWord() const { return m_Word; } //Debugging purposes
-	const int GetLives() const { return m_MaxGuesses; }
+	std::string GetGuessedWord() const { return m_GuessedWord; }
+	const int GetLives() const { return m_Lives; }
 
 
 
