@@ -5,6 +5,7 @@ A simple Hangman game built with **C++17** using the **SFML library** for graphi
 ## Features
 
 - Interactive gameplay with on-screen keyboard input.
+- Supports use of physical keyboard
 - A graphical representation of the gallows and hangman.
 - Tracks lives and displays correct or incorrect guesses.
 
@@ -12,7 +13,7 @@ A simple Hangman game built with **C++17** using the **SFML library** for graphi
 
 ## Gameplay
 
-- Use the on-screen keyboard to guess letters.
+- Use the on-screen keyboard to guess letters or your keyboard.
 - The game ends when the word is guessed or all lives are lost.
 - Correct guesses turn **green**, incorrect guesses turn **red**.
 - Game is automatically restarted on win or loss.
