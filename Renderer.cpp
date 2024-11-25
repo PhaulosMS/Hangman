@@ -146,6 +146,75 @@ std::vector<sf::RectangleShape> Renderer::MakeGallow()
     return RectangleBases;
 }
 
+void Renderer::DrawBody()
+{
+    std::vector<sf::CircleShape> BodyParts;
+    int Lives = m_GameLogic.GetLives();
+    float gallowsBaseHeight = 300.0f;
+    float gallowsPoleHeight = 400.0f;
+    float gallowsOffsetX = 150.0f;
+
+    //SetPosition = (WindoWidth / + GallowOffsetX, WindowHeight - BaseHeight - PoleHeight + Offset(depending on part))
+
+    if (Lives <= 5) {
+        sf::CircleShape Head(25.0f);
+        Head.setFillColor(sf::Color::Transparent);
+        Head.setOutlineColor(sf::Color::Black);
+        Head.setOutlineThickness(7.0f);
+        Head.setOrigin(Head.getRadius(), Head.getRadius());
+        Head.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 75); 
+        BodyParts.push_back(Head);
+    }
+
+    if (Lives <= 4) {
+        sf::RectangleShape Torso(sf::Vector2f(10.0f, 100.0f));
+        Torso.setFillColor(sf::Color::Black);
+        Torso.setOrigin(Torso.getSize().x / 2, 0);
+        Torso.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 100); 
+        m_Window.draw(Torso);
+    }
+
+    if (Lives <= 3) {
+        sf::RectangleShape LeftArm(sf::Vector2f(10.0f, 50.0f));
+        LeftArm.setFillColor(sf::Color::Black);
+        LeftArm.setOrigin(LeftArm.getSize().x / 2, 0);
+        LeftArm.setRotation(-45);
+        LeftArm.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 110);
+        m_Window.draw(LeftArm);
+    }
+
+    if (Lives <= 2) {
+        sf::RectangleShape RightArm(sf::Vector2f(10.0f, 50.0f));
+        RightArm.setFillColor(sf::Color::Black);
+        RightArm.setOrigin(RightArm.getSize().x / 2, 0);
+        RightArm.setRotation(45);
+        RightArm.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 110);
+        m_Window.draw(RightArm);
+    }
+
+    if (Lives <= 1) {
+        sf::RectangleShape LeftLeg(sf::Vector2f(10.0f, 50.0f));
+        LeftLeg.setFillColor(sf::Color::Black);
+        LeftLeg.setOrigin(LeftLeg.getSize().x / 2, 0);
+        LeftLeg.setRotation(-45);
+        LeftLeg.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 200);
+        m_Window.draw(LeftLeg);
+    }
+
+    if (Lives == 0) {
+        sf::RectangleShape RightLeg(sf::Vector2f(10.0f, 50.0f));
+        RightLeg.setFillColor(sf::Color::Black);
+        RightLeg.setOrigin(RightLeg.getSize().x / 2, 0);
+        RightLeg.setRotation(45);
+        RightLeg.setPosition(m_WindowWidth / 2 + gallowsOffsetX, m_WindowHeight - gallowsBaseHeight - gallowsPoleHeight + 200);
+        m_Window.draw(RightLeg);
+    }
+
+    for (const auto& Part : BodyParts) {
+        m_Window.draw(Part);
+    }
+}
+
 void Renderer::SetFont()
 {
     if (!m_Font.loadFromFile("Fonts/Roboto-Regular.ttf"))
@@ -162,6 +231,7 @@ void Renderer::DrawGraphics()
     m_Window.draw(m_IngameTitle);
     m_Window.draw(m_GuessedWord);
     m_Window.draw(m_Lives);
+    DrawBody();
 
     std::vector<sf::RectangleShape> Rects = MakeGallow();
     for (const sf::RectangleShape& Rect : Rects) {
@@ -178,8 +248,6 @@ void Renderer::DrawKeyboard()
     float StartX = 50.0f;  
     float StartY = m_Window.getSize().y - 200.0f; 
     float ButtonSize = 40.0f; 
-
-
 
     for (char Letter = 'A'; Letter <= 'Z'; ++Letter) {
         float X = StartX + (Letter - 'A') % 13 * (ButtonSize + 10);  

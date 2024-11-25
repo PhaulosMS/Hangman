@@ -33,6 +33,7 @@ private:
     void SetFont();
     void DrawGraphics();
     std::vector<sf::RectangleShape> MakeGallow();
+    void DrawBody();
     void SetupGame();
     void SetupText();
     void SetupIngameTitle();
