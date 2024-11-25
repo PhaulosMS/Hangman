@@ -14,6 +14,7 @@ private:
 
 private:
 	void SetWord();
+	std::vector<std::string> FallBackWords{ "Empty", "Programming", "Computer", "Processing", "Graphics", "Hangman", "Keyboard", "Monitor", "Substance", "Gallow" };
 	
 	void PopulateGuessedWord();
 	void SetGuessedWord(char Letter);

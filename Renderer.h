@@ -24,7 +24,6 @@ private:
     sf::Text m_IngameTitle;
     sf::Text m_GuessedWord;
     sf::Text m_Lives;
-
     std::string m_Title;
     int m_WindowWidth;
     int m_WindowHeight;

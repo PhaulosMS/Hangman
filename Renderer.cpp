@@ -23,21 +23,19 @@ void Renderer::Run()
 
             if (m_GameLogic.IsGameOver())
             {
-                // Create a clock to handle the game-over delay
+                DrawGraphics(); // Fixes if keyboard input was used drawing didn't happen
                 sf::Clock Clock;
                 while (m_GameLogic.IsGameOver())
                 {
-                    // Get elapsed time
                     sf::Time Timer = Clock.getElapsedTime();
-
-                    std::cout << Timer.asSeconds() << std::endl;
 
                     if (Timer.asSeconds() > 3)
                     {
                         SetupGame();
                         break;
                     }
-                    while (m_Window.pollEvent(Event)) {} // Used to consume events while restart is happening 
+
+                    while (m_Window.pollEvent(Event)) {}
                 }
                 continue;
             }
@@ -51,9 +49,11 @@ void Renderer::Run()
                     HandleMouseClick(Event.mouseButton.x, Event.mouseButton.y);
                 }
             }
-        }       
+        }
+
         DrawGraphics();
     }
+
 }
 
 void Renderer::SetupGame()

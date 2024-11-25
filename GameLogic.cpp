@@ -20,24 +20,31 @@ void GameLogic::StartGame()
 }
 
 
-void GameLogic::SetWord() {
-
-	std::ifstream File("Words/Words.txt");
-	if (!File.is_open()) { std::cerr << "Word file could not open please check it exists -> /Words/Words.txt"; }
-
+void GameLogic::SetWord() 
+{
 	std::string WordToPushBack;
 	std::vector<std::string> AvailableWords;
 
-	while (std::getline(File, WordToPushBack))
+	std::ifstream File("Words/Words.txt");
+	if (File.is_open() && File.peek() != std::ifstream::traits_type::eof())
+	{ 
+		while (std::getline(File, WordToPushBack))
+		{
+			AvailableWords.push_back(WordToPushBack);
+		}
+
+		std::srand(static_cast<unsigned int>(std::time(0)));
+		
+
+		File.close();
+	}
+	else
 	{
-		AvailableWords.push_back(WordToPushBack);
+		AvailableWords = FallBackWords;
+		std::cerr << "File could not be found looking for Words/Words.txt, using default words as backup";
 	}
 
-	std::srand(static_cast<unsigned int>(std::time(0)));
 	m_Word = AvailableWords[std::rand() % AvailableWords.size()];
-
-	File.close();
-
 	ConvertWordToUpper();
 }
 
@@ -45,7 +52,6 @@ void GameLogic::ProcessLetter(char Letter)
 {
 	Letter = std::toupper(Letter);
 	
-
 	if (std::find(m_Word.begin(), m_Word.end(), Letter) != m_Word.end())
 	{
 		SetGuessedWord(Letter);
@@ -60,7 +66,6 @@ void GameLogic::ProcessLetter(char Letter)
 	{
 		m_Lives--;
 		m_Guesses.push_back(Letter);
-		
 	}
 }
 
