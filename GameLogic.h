@@ -14,7 +14,7 @@ private:
 
 private:
 	void SetWord();
-	bool IsGameOver() const;
+	
 	void PopulateGuessedWord();
 	void SetGuessedWord(char Letter);
 	void ConvertWordToUpper();
@@ -24,6 +24,7 @@ public:
 	void StartGame();
 	void AskForInput(sf::Event Event);
 	bool IsWin() const;
+	bool IsGameOver() const;
 	void ProcessLetter(char Letter);
 	
 

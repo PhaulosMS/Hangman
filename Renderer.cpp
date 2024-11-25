@@ -21,6 +21,27 @@ void Renderer::Run()
                 m_Window.close();
             }
 
+            if (m_GameLogic.IsGameOver())
+            {
+                // Create a clock to handle the game-over delay
+                sf::Clock Clock;
+                while (m_GameLogic.IsGameOver())
+                {
+                    // Get elapsed time
+                    sf::Time Timer = Clock.getElapsedTime();
+
+                    std::cout << Timer.asSeconds() << std::endl;
+
+                    if (Timer.asSeconds() > 3)
+                    {
+                        SetupGame();
+                        break;
+                    }
+                    while (m_Window.pollEvent(Event)) {} // Used to consume events while restart is happening 
+                }
+                continue;
+            }
+
             m_GameLogic.AskForInput(Event);
 
             if (Event.type == sf::Event::MouseButtonPressed)
@@ -30,8 +51,7 @@ void Renderer::Run()
                     HandleMouseClick(Event.mouseButton.x, Event.mouseButton.y);
                 }
             }
-        }
-
+        }       
         DrawGraphics();
     }
 }
@@ -157,7 +177,7 @@ void Renderer::DrawKeyboard()
 {
     float startX = 50.0f;  
     float startY = m_Window.getSize().y - 200.0f; 
-    float buttonSize = 50.0f; 
+    float buttonSize = 40.0f; 
 
 
 
@@ -190,7 +210,6 @@ void Renderer::DrawKeyboard()
             button.buttonBackground.setFillColor(sf::Color::White);  
         }
 
-        // Set button shape size and position
         button.buttonBackground.setSize(sf::Vector2f(button.width, button.height));
         button.buttonBackground.setPosition(x, y);
 

@@ -11,11 +11,17 @@ GameLogic::GameLogic() : m_Lives(6), m_Guesses() {}
 
 void GameLogic::StartGame()
 {
+	m_Lives = 6;
+	m_GuessedWord.clear();
+	m_Guesses.clear();
 	SetWord();
 	PopulateGuessedWord();
+	
 }
 
+
 void GameLogic::SetWord() {
+
 	std::ifstream File("Words/Words.txt");
 	if (!File.is_open()) { std::cerr << "Word file could not open please check it exists -> /Words/Words.txt"; }
 
@@ -38,12 +44,13 @@ void GameLogic::SetWord() {
 void GameLogic::ProcessLetter(char Letter)
 {
 	Letter = std::toupper(Letter);
-	if (m_Lives <= 0) return;
+	
 
 	if (std::find(m_Word.begin(), m_Word.end(), Letter) != m_Word.end())
 	{
-		m_Guesses.push_back(Letter);
 		SetGuessedWord(Letter);
+		m_Guesses.push_back(Letter);
+		
 	}
 	else if (std::find(m_Guesses.begin(), m_Guesses.end(), Letter) != m_Guesses.end())
 	{
@@ -51,26 +58,29 @@ void GameLogic::ProcessLetter(char Letter)
 	}
 	else
 	{
-		m_Guesses.push_back(Letter);
 		m_Lives--;
+		m_Guesses.push_back(Letter);
+		
 	}
 }
 
 bool GameLogic::IsGameOver() const
 {
-	return false;
+	if (m_Lives == 0) return true;
+	else if (m_GuessedWord == m_Word) return true;
+	else return false;
 
 }
 
 bool GameLogic::IsWin() const
 {
-	if (m_GuessedWord == m_Word) return true;
-	else if (m_Lives == 0 && m_GuessedWord != m_Word) return false;
 	return false;
+
 }
 
 void GameLogic::PopulateGuessedWord()
 {
+	
 	for (int i = 0; i < m_Word.size(); i++)
 	{
 		{
