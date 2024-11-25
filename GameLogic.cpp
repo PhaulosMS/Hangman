@@ -32,16 +32,13 @@ void GameLogic::SetWord()
 		{
 			AvailableWords.push_back(WordToPushBack);
 		}
-
 		std::srand(static_cast<unsigned int>(std::time(0)));
-		
-
 		File.close();
 	}
 	else
 	{
 		AvailableWords = FallBackWords;
-		std::cerr << "File could not be found looking for Words/Words.txt, using default words as backup";
+		std::cerr << "File could not be found or is empty looking for Words/Words.txt, using default words as backup";
 	}
 
 	m_Word = AvailableWords[std::rand() % AvailableWords.size()];
@@ -60,7 +57,7 @@ void GameLogic::ProcessLetter(char Letter)
 	}
 	else if (std::find(m_Guesses.begin(), m_Guesses.end(), Letter) != m_Guesses.end())
 	{
-	std::cout << "You have already guessed this letter: " << Letter << std::endl;
+		std::cout << "You have already guessed this letter: " << Letter << std::endl;
 	}
 	else
 	{

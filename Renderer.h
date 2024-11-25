@@ -5,11 +5,11 @@
 #include "GameLogic.h"
 
 struct LetterButton {
-    float x, y, width, height;
-    char letter;
-    sf::RectangleShape buttonBackground;
-    bool isCorrect;  
-    bool isClicked;  
+    float X, Y, Width, Height;
+    char Letter;
+    sf::RectangleShape ButtonBackground;
+    bool IsCorrect;  
+    bool IsClicked;  
 };
 
 class Renderer
@@ -39,6 +39,6 @@ private:
     void SetupGuessedWord();
     void SetupLives();
     void DrawKeyboard(); 
-    void HandleMouseClick(int mouseX, int mouseY); 
+    void HandleMouseClick(int MouseX, int MouseY); 
     GameLogic& m_GameLogic;
 };

@@ -175,69 +175,71 @@ void Renderer::DrawGraphics()
 
 void Renderer::DrawKeyboard()
 {
-    float startX = 50.0f;  
-    float startY = m_Window.getSize().y - 200.0f; 
-    float buttonSize = 40.0f; 
+    float StartX = 50.0f;  
+    float StartY = m_Window.getSize().y - 200.0f; 
+    float ButtonSize = 40.0f; 
 
 
 
-    for (char letter = 'A'; letter <= 'Z'; ++letter) {
-        float x = startX + (letter - 'A') % 13 * (buttonSize + 10);  
-        float y = startY + (letter - 'A') / 13 * (buttonSize + 10);
+    for (char Letter = 'A'; Letter <= 'Z'; ++Letter) {
+        float X = StartX + (Letter - 'A') % 13 * (ButtonSize + 10);  
+        float Y = StartY + (Letter - 'A') / 13 * (ButtonSize + 10);
 
-        LetterButton button;
-        button.x = x;
-        button.y = y;
-        button.width = buttonSize;
-        button.height = buttonSize;
-        button.letter = letter;
+        LetterButton Button;
+        Button.X = X;
+        Button.Y = Y;
+        Button.Width = ButtonSize;
+        Button.Height = ButtonSize;
+        Button.Letter = Letter;
         
 
-        bool isGuessed = false;
-        if (!m_GameLogic.GetGuessedLetters().empty()) {
-            isGuessed = std::find(m_GameLogic.GetGuessedLetters().begin(), m_GameLogic.GetGuessedLetters().end(), letter) != m_GameLogic.GetGuessedLetters().end();
-        }
+        bool IsGuessed = false;
+        if (!m_GameLogic.GetGuessedLetters().empty()) { IsGuessed = std::find(m_GameLogic.GetGuessedLetters().begin(), m_GameLogic.GetGuessedLetters().end(), Letter) != m_GameLogic.GetGuessedLetters().end(); }
 
-        if (isGuessed) {
-            if (m_GameLogic.IsCorrectGuess(letter)) {
-                button.buttonBackground.setFillColor(sf::Color::Green);  
+        if (IsGuessed) 
+        {
+            if (m_GameLogic.IsCorrectGuess(Letter)) 
+            {
+                Button.ButtonBackground.setFillColor(sf::Color::Green);  
             }
-            else {
-                button.buttonBackground.setFillColor(sf::Color::Red);  
+            else 
+            {
+                Button.ButtonBackground.setFillColor(sf::Color::Red);  
             }
         }
-        else {
-            button.buttonBackground.setFillColor(sf::Color::White);  
+        else 
+        {
+            Button.ButtonBackground.setFillColor(sf::Color::White);  
         }
 
-        button.buttonBackground.setSize(sf::Vector2f(button.width, button.height));
-        button.buttonBackground.setPosition(x, y);
+        Button.ButtonBackground.setSize(sf::Vector2f(Button.Width, Button.Height));
+        Button.ButtonBackground.setPosition(X, Y);
 
-        m_Window.draw(button.buttonBackground);
+        m_Window.draw(Button.ButtonBackground);
 
         sf::Text letterText;
         letterText.setFont(m_Font);
-        letterText.setString(std::string(1, letter));
+        letterText.setString(std::string(1, Letter));
         letterText.setCharacterSize(24);
         letterText.setFillColor(sf::Color::Black);
         letterText.setStyle(sf::Text::Bold);
-        letterText.setPosition(x + buttonSize / 4, y + buttonSize / 4); 
+        letterText.setPosition(X + ButtonSize / 4, Y + ButtonSize / 4); 
 
         m_Window.draw(letterText);
 
-        m_LetterButtons.push_back(button);
+        m_LetterButtons.push_back(Button);
     }
 }
 
-void Renderer::HandleMouseClick(int mouseX, int mouseY)
+void Renderer::HandleMouseClick(int MouseX, int MouseY)
 {
-    for (LetterButton& button : m_LetterButtons)
+    for (LetterButton& Button : m_LetterButtons)
     {
-        if (mouseX >= button.x && mouseX <= button.x + button.width &&
-            mouseY >= button.y && mouseY <= button.y + button.height)
+        if (MouseX >= Button.X && MouseX <= Button.X + Button.Width &&
+            MouseY >= Button.Y && MouseY <= Button.Y + Button.Height)
         {
-            m_GameLogic.ProcessLetter(button.letter);
-            std::cout << "Letter clicked: " << button.letter << std::endl;
+            m_GameLogic.ProcessLetter(Button.Letter);
+            std::cout << "Letter clicked: " << Button.Letter << std::endl;
             break;
         }
     }
